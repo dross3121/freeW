@@ -87,19 +87,16 @@ let sackAlgo = (people=fullNameArr, profits=earningsArr, hour=hoursNeededArr, ca
         }
       
         let selectedPeople = []
-        let selectedWeights = '';
         let totalProfit = dp[hour.length - 1][capacity];
         let remainingCapacity = capacity;
         for (let i = hour.length - 1; i > 0; i--) {
           if (totalProfit != dp[i - 1][remainingCapacity]) {
             selectedPeople.push(`${people[i]}`);
-            selectedWeights = `${hour[i]} ${selectedWeights}`;
             remainingCapacity -= hour[i];
             totalProfit -= profits[i];
           }
         }
         // creates a list of names for final people and displays to dom
-        if (totalProfit != 0) selectedWeights = `${hour[0]} ${selectedWeights}`;
         if (totalProfit != 0) selectedPeople.push(`${people[0]}`);
         console.log(selectedPeople)
         selectedPeople.forEach(element => {
@@ -111,7 +108,6 @@ let sackAlgo = (people=fullNameArr, profits=earningsArr, hour=hoursNeededArr, ca
 
         })
         
-        // console.log(`Selected weights: ${selectedWeights}`);
         console.log("Selected people:", selectedPeople);
       
         // maximum profit will be at the bottom-right corner.
@@ -130,6 +126,6 @@ button.addEventListener("click", newFormFunc)
 // var people = ['Jane', 'Bob', 'Mark', 'Jill', 'Don'];
 // var profits = [1000, 3000, 2700, 5000, 3600];
 // var hours = [3, 5, 4, 8, 5];
-
+// sackAlgo(people,profits,hours, 20)
 
 
