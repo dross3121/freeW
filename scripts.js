@@ -6,12 +6,12 @@ document.body.appendChild(newForm);
 
 
 function newFormFunc() {
+    // creates the form and sets attriutes when new form button is trigger by user
     let newDiv = document.createElement("div")
     let hoursNeeded = document.createElement("input");
     let fullName = document.createElement("input");
     let potential = document.createElement("input");
 
-    
     newDiv.setAttribute("id", "myDiv");
     fullName.setAttribute("type", "text");
     fullName.setAttribute("id", "fullName")
@@ -23,8 +23,6 @@ function newFormFunc() {
     hoursNeeded.setAttribute("id", "hoursNeeded");
     hoursNeeded.setAttribute("placeholder", "Hours Needed");
 
-    
-    
     newDiv.appendChild(fullName)
     newDiv.appendChild(hoursNeeded)
     newDiv.appendChild(potential)
@@ -36,33 +34,31 @@ let earningsArr = []
 let hoursNeededArr = []
 let capcity;
 let submitForm = (e) => {
-    // code to sort students goes here  
+    // creates a new form when e is trigger  
     e.preventDefault()
     let earnings = document.querySelectorAll("#potentialEarning")
     let hoursNeeded = document.querySelectorAll("#hoursNeeded")
     let fullName = document.querySelectorAll("#fullName")
-    earnings.forEach(earn =>{
+    earnings.forEach(earn =>{ // creates a list for potential earnings of each client
         earningsInt = parseInt(earn.value) 
         earningsArr.push(earningsInt)
     })
-    hoursNeeded.forEach(hours =>{
+    hoursNeeded.forEach(hours =>{ // creates a list of all of the clients lerning hours needed
         hoursInt = parseInt(hours.value) 
         hoursNeededArr.push(hoursInt)
     })
-    fullName.forEach(client => {
+    fullName.forEach(client => { //creates list of all input clients names
         fullNameArr.push(client.value)
-        console.log(fullNameArr)
     })
     classSize = parseInt(document.getElementById("class").value)
     capcity = parseInt(document.getElementById("hours").value)
-
+    
 }
 
 
-let knapsack = (people=fullNameArr, profits=earningsArr, weights=hoursNeededArr, capacity=capcity) => {
+let sackAlgo = (people=fullNameArr, profits=earningsArr, hour=hoursNeededArr, capacity=capcity) => {
         const n = profits.length;
-        
-        if (capacity <= 0 || n == 0 || weights.length != n) return 0;
+        if (capacity <= 0 || n == 0 || hour.length != n) return 0;
       
         const dp = Array(profits.length)
           .fill(0)
@@ -71,9 +67,9 @@ let knapsack = (people=fullNameArr, profits=earningsArr, weights=hoursNeededArr,
         // populate the capacity=0 columns; with '0' capacity we have '0' profit
         for (let i = 0; i < n; i++) dp[i][0] = 0;
       
-        // if we have only one weight, we will take it if it is not more than the capacity
+        // if we have only one hour, we will take it if it is not more than the capacity
         for (let c = 0; c <= capacity; c++) {
-          if (weights[0] <= c) dp[0][c] = profits[0];
+          if (hour[0] <= c) dp[0][c] = profits[0];
         }
       
         // process all sub-arrays for all the capacities
@@ -82,7 +78,7 @@ let knapsack = (people=fullNameArr, profits=earningsArr, weights=hoursNeededArr,
             let profit1 = 0,
               profit2 = 0;
             // include the item, if it is not more than the capacity
-            if (weights[i] <= c) profit1 = profits[i] + dp[i - 1][c - weights[i]];
+            if (hour[i] <= c) profit1 = profits[i] + dp[i - 1][c - hour[i]];
             // exclude the item
             profit2 = dp[i - 1][c];
             // take maximum
@@ -92,28 +88,28 @@ let knapsack = (people=fullNameArr, profits=earningsArr, weights=hoursNeededArr,
       
         let selectedPeople = []
         let selectedWeights = '';
-        let totalProfit = dp[weights.length - 1][capacity];
+        let totalProfit = dp[hour.length - 1][capacity];
         let remainingCapacity = capacity;
-        for (let i = weights.length - 1; i > 0; i--) {
+        for (let i = hour.length - 1; i > 0; i--) {
           if (totalProfit != dp[i - 1][remainingCapacity]) {
             selectedPeople.push(`${people[i]}`);
-            selectedWeights = `${weights[i]} ${selectedWeights}`;
-            remainingCapacity -= weights[i];
+            selectedWeights = `${hour[i]} ${selectedWeights}`;
+            remainingCapacity -= hour[i];
             totalProfit -= profits[i];
           }
         }
-      
-        if (totalProfit != 0) selectedWeights = `${weights[0]} ${selectedWeights}`;
-        if (totalProfit != 0) selectedPeople = `${people[0]}`;
+        // creates a list of names for final people and displays to dom
+        if (totalProfit != 0) selectedWeights = `${hour[0]} ${selectedWeights}`;
+        if (totalProfit != 0) selectedPeople.push(`${people[0]}`);
         console.log(selectedPeople)
-        for (let element = 0; element < selectedPeople.length; element++) {
-            console.log(selectedPeople[element])
+        selectedPeople.forEach(element => {
+            console.log(element)
             var para = document.createElement("p")
-            var t = document.createTextNode(selectedPeople[element]);      
+            var t = document.createTextNode(element);      
             para.appendChild(t);                                    
             document.getElementById("clientsInput").appendChild(para)
 
-        }
+        })
         
         // console.log(`Selected weights: ${selectedWeights}`);
         console.log("Selected people:", selectedPeople);
@@ -121,19 +117,19 @@ let knapsack = (people=fullNameArr, profits=earningsArr, weights=hoursNeededArr,
         // maximum profit will be at the bottom-right corner.
         document.getElementById("testInput").innerHTML =`total profit and selected people: ${dp[n - 1][capacity]}`
 }
-let resetButton = document.getElementById("reset") // reset game button
+let resetButton = document.getElementById("reset") // reset button
     let reset = () => {
         location.reload()
     }
 
 submitButton.addEventListener("click",submitForm)
-submitButton.addEventListener("click", knapsack)
+submitButton.addEventListener("click", sackAlgo)
 button.addEventListener("click", newFormFunc)
+
+// test cases
 // var people = ['Jane', 'Bob', 'Mark', 'Jill', 'Don'];
 // var profits = [1000, 3000, 2700, 5000, 3600];
-// var weights = [3, 5, 4, 8, 5];
-console.log(people)
-
+// var hours = [3, 5, 4, 8, 5];
 
 
 
