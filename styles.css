@@ -1,10 +1,19 @@
 #myForm div {
     display: block;
     width: 100%;
+    white-space:pre-line;
 }
 
 button{
     padding: .2%;
     margin-top: 2%;
 }
-  
+@media (max-width: 50%){
+    body{
+        background: black;
+        color: black; 
+        display: block;
+       
+    }
+    
+}

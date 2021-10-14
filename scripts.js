@@ -4,7 +4,6 @@ let newForm = document.createElement("form");
 newForm.setAttribute("id", "myForm");
 document.body.appendChild(newForm);
 
-
 function newFormFunc() {
     // creates the form and sets attriutes when new form button is trigger by user
     let newDiv = document.createElement("div")
@@ -53,7 +52,6 @@ let submitForm = (e) => {
     })
     classSize = parseInt(document.getElementById("class").value)
     capcity = parseInt(document.getElementById("hours").value) //sets the max allotted class hours
-    
 }
 
 
@@ -61,19 +59,18 @@ let sackAlgo = (people=fullNameArr, profits=earningsArr, hour=hoursNeededArr, ca
         const n = profits.length;
         const fn = fullNameArr
         if (capacity <= 0 || n == 0 || hour.length != n) return 0;
-      
+
         const dp = Array(profits.length)
           .fill(0)
           .map(() => Array(capacity + 1).fill(0));
       
         // populate the capacity=0 columns; with '0' capacity we have '0' profit
         for (let i = 0; i < n; i++) dp[i][0] = 0;
-      
+
         // if we have only one hour, we will take it if it is not more than the capacity
         for (let c = 0; c <= capacity; c++) {
           if (hour[0] <= c) dp[0][c] = profits[0];
         }
-      
         // process all sub-arrays for all the capacities
         for (let i = 1; i < n; i++) {
           for (let c = 1; c <= capacity; c++) {
@@ -87,7 +84,6 @@ let sackAlgo = (people=fullNameArr, profits=earningsArr, hour=hoursNeededArr, ca
             dp[i][c] = Math.max(profit1, profit2);
           }
         }
-      
         let selectedPeople = []
         let totalProfit = dp[hour.length - 1][capacity];
         let remainingCapacity = capacity;
@@ -106,8 +102,7 @@ let sackAlgo = (people=fullNameArr, profits=earningsArr, hour=hoursNeededArr, ca
             let t = document.createTextNode(element);      
             para.appendChild(t);                                    
             document.getElementById("clientsInput").appendChild(para)
-        })
-              
+        })   
         // maximum profit will be at the bottom-right corner.
         document.getElementById("testInput").innerHTML =`total profit and selected people: ${dp[n - 1][capacity]}`
 }
@@ -115,7 +110,6 @@ let resetButton = document.getElementById("reset") // reset button
     let reset = () => {
         location.reload()
     }
-
 submitButton.addEventListener("click",submitForm)
 submitButton.addEventListener("click", sackAlgo)
 button.addEventListener("click", newFormFunc)
