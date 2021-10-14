@@ -48,16 +48,18 @@ let submitForm = (e) => {
         hoursNeededArr.push(hoursInt)
     })
     fullName.forEach(client => { //creates list of all input clients names
-        fullNameArr.push(client.value)
+        fn = client.value
+        fullNameArr.push(fn)
     })
     classSize = parseInt(document.getElementById("class").value)
-    capcity = parseInt(document.getElementById("hours").value)
+    capcity = parseInt(document.getElementById("hours").value) //sets the max allotted class hours
     
 }
 
 
 let sackAlgo = (people=fullNameArr, profits=earningsArr, hour=hoursNeededArr, capacity=capcity) => {
         const n = profits.length;
+        const fn = fullNameArr
         if (capacity <= 0 || n == 0 || hour.length != n) return 0;
       
         const dp = Array(profits.length)
@@ -91,25 +93,21 @@ let sackAlgo = (people=fullNameArr, profits=earningsArr, hour=hoursNeededArr, ca
         let remainingCapacity = capacity;
         for (let i = hour.length - 1; i > 0; i--) {
           if (totalProfit != dp[i - 1][remainingCapacity]) {
-            selectedPeople.push(`${people[i]}`);
+            selectedPeople.push(`${fn[i]}`);
             remainingCapacity -= hour[i];
             totalProfit -= profits[i];
           }
         }
         // creates a list of names for final people and displays to dom
-        if (totalProfit != 0) selectedPeople.push(`${people[0]}`);
+        if (totalProfit != 0) selectedPeople.push(`${fn[0]}`);
         console.log(selectedPeople)
         selectedPeople.forEach(element => {
-            console.log(element)
-            var para = document.createElement("p")
-            var t = document.createTextNode(element);      
+            let para = document.createElement("p")
+            let t = document.createTextNode(element);      
             para.appendChild(t);                                    
             document.getElementById("clientsInput").appendChild(para)
-
         })
-        
-        console.log("Selected people:", selectedPeople);
-      
+              
         // maximum profit will be at the bottom-right corner.
         document.getElementById("testInput").innerHTML =`total profit and selected people: ${dp[n - 1][capacity]}`
 }
@@ -126,6 +124,5 @@ button.addEventListener("click", newFormFunc)
 // var people = ['Jane', 'Bob', 'Mark', 'Jill', 'Don'];
 // var profits = [1000, 3000, 2700, 5000, 3600];
 // var hours = [3, 5, 4, 8, 5];
-// sackAlgo(people,profits,hours, 20)
 
 
