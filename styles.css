@@ -1,0 +1,10 @@
+#myForm div {
+    display: block;
+    width: 100%;
+}
+
+button{
+    padding: .2%;
+    margin-top: 5%;
+}
+  
