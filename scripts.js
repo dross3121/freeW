@@ -104,7 +104,7 @@ let sackAlgo = (people=fullNameArr, profits=earningsArr, hour=hoursNeededArr, ca
             document.getElementById("clientsInput").appendChild(para)
         })   
         // maximum profit will be at the bottom-right corner.
-        document.getElementById("testInput").innerHTML =`total profit and selected people: ${dp[n - 1][capacity]}`
+        document.getElementById("testInput").innerHTML =`total profit and selected people: ${'$' + dp[n - 1][capacity]}`
 }
 let resetButton = document.getElementById("reset") // reset button
     let reset = () => {
